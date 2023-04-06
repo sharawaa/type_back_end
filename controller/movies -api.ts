@@ -8,7 +8,7 @@ moviesRouter.get("/movies", async (req: Request, res: Response) => {
   const result = await movieModel
     .find({ poster: { $exists: 1 } })
     .select({ title: 1, poster: 1, _id: 1 })
-    .limit(100);
+    .limit(10);
   res.status(200).send(result);
 });
 
