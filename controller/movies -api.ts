@@ -13,9 +13,26 @@ moviesRouter.get("/movies", async (req: Request, res: Response) => {
 });
 
 moviesRouter.get(`/movie/:id`, async (request: Request, response: Response) => {
-  console.log(request);
   const result = await movieModel.findOne({ _id: `${request.params.id}` });
   response.status(200).send(result);
 });
+
+moviesRouter.get(
+  `/search/:id`,
+  async (request: Request, response: Response) => {
+    const search = request.params.id;
+    const result = await movieModel
+      .find({ id: { $regex: search } })
+      .select({ title: 1, poster: 1 })
+      .limit(10);
+    response.status(200).send(result);
+    console.log(result);
+  }
+);
+
+// moviesRouter.get("/search:id",async (request:Request, response:Response)=>{
+//   const result = await movieModel.find({}).select({_id:1}).limit(10000)
+//   response.status(200).send(result)
+// })
 
 export default moviesRouter;
